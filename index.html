@@ -28,30 +28,164 @@
         </ul>
       </header>
       <section>
-        <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+        <h1>
+<a id="lindenmayer-" class="anchor" href="#lindenmayer-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lindenmayer <a href="https://travis-ci.org/nylki/lindenmayer"><img src="https://travis-ci.org/nylki/lindenmayer.svg?branch=master" alt="Build Status"></a>
+</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.</p>
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
+
+<h2></h2>
+
+<h2></h2>
+
+<ul>
+<li>
+</ul>
+
+<p>Lindenmayer is  a <a href="https://en.wikipedia.org/wiki/L-system">L-System</a> library using modern (ES6) JavaScript with focus on a concise syntax. The idea is to have a very powerful but simple base functionality, that can handle most use-cases by simply allowing anonymous functions as productions, which makes it very flexible in comparison to classic L-Systems.</p>
+
+<p>The library can also parse (to some extend) classic L-System syntax as defined in Lindenmayers original work <em>Algorithmic Beauty of Plant</em> from 1990. (for example branches: <code>[]</code> or context sensitive productions: <code>&lt;&gt;</code>).
+Most stuff should work. I am currently working on parametric L-System support.</p>
+
+<p><strong>Right now it's under heavy development, so features and names are subject to change.
+I will remove this warning when I consider this library stable.</strong>
+<strong>Better docs and more examples are coming soon</strong> :)</p>
+
+<p>Basic usage:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch-curve.</span>
+<span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>}
+})
+<span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">kochcurve</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">2</span>)
+<span class="pl-c">// result === 'F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F'</span></pre></div>
+
+<p>There are multiple way to set productions, including javascript functions:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
+<span class="pl-smi">lsys</span>.<span class="pl-en">setWord</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+
+<span class="pl-c">// simple production, using ES6 arrow function</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
+
+<span class="pl-c">// or same with just the String, both works</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
+
+<span class="pl-c">// simple stochastic production, producing `+F` with 10% probability, `FB+B` with 90%</span>
+<span class="pl-smi">myLSys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.1</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>)
+
+<span class="pl-c">// simple context sensitive production rule, replacing `B` with `Z` if previous character is a A and next character is 'C'</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>,
+  ({index, word}) <span class="pl-k">=&gt;</span> (word[index<span class="pl-k">-</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>) <span class="pl-k">&amp;&amp;</span> (word[index<span class="pl-k">+</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>
+)
+
+<span class="pl-c">// or if you prefer the concise *classic* syntax for context sensitive productions:</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A&lt;B&gt;C<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span>)</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a id="initializing" class="anchor" href="#initializing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>initializing</h3>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+<p>You can init a L-System in one go:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch curve.</span>
+<span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>}
+})
+<span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">kochcurve</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">2</span>)
+
+<span class="pl-c">// Initialize L-System with multiple productions</span>
+<span class="pl-k">let</span> mylsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
+      productions<span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A+<span class="pl-pds">'</span></span>,
+        <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>BA<span class="pl-pds">'</span></span>,
+        <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>
+      }
+})
+</pre></div>
+
+<p>It's also possible to use functions as productions. This can be useful if you want to create <strong>stochastic L-Systems</strong>, like so:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">F</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.7</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>}
+})
+
+<span class="pl-c">// Productions can be changed later:</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.2</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>You could also start with an empty L-System, and set all necessary parameters later on.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
+<span class="pl-smi">lsys</span>.<span class="pl-en">setWord</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>AAB<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>CB<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>This can be useful if you want to dynamically generate and edit L-Systems. For example, you might have a UI, where the user can add new production via a text box.</p>
 
 <h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating pages manually</h3>
+<a id="iterating" class="anchor" href="#iterating" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iterating</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Now that we have set up our L-System set, we want to generate new words:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// iterate once, log result to console:</span>
+<span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>()
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(result))
+
+<span class="pl-c">// iterate multiple times, then log result</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">5</span>))</pre></div>
 
 <h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a id="final-functions-visualization-and-other-post-processing" class="anchor" href="#final-functions-visualization-and-other-post-processing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final functions: Visualization and other post processing</h3>
 
-<p>You can <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/#mentioning-users-and-teams" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>You possibly want to visualize your L-Systems in some way.
+Of course you could iterate and parse the resulting string yourself. But <code>lindemayer</code> already got an API to define
+such postprocessing: <code>final</code> functions in an easy way. In those <code>final</code> functions you can define what should be done for each literal/character. The classic way to use L-Systems is to visualize words with <a href="https://en.wikipedia.org/wiki/Turtle_graphics">turtle graphics</a>.
+The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz's classic work <a href="http://algorithmicbotany.org/papers/#abop">Algorithmic Beauty of Plants</a> can be easily implented this way, to output the fractals onto a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">HTML Canvas element</a>:</p>
 
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h3>
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">body</span>&gt;
+    &lt;<span class="pl-ent">canvas</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>canvas<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>1000<span class="pl-pds">"</span></span> <span class="pl-e">height</span>=<span class="pl-s"><span class="pl-pds">"</span>1000<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">canvas</span>&gt;
+&lt;/<span class="pl-ent">body</span>&gt;
+</pre></div>
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+<div class="highlight highlight-source-js"><pre>
+<span class="pl-k">var</span> canvas <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(<span class="pl-s"><span class="pl-pds">'</span>canvas<span class="pl-pds">'</span></span>)
+<span class="pl-k">var</span> ctx <span class="pl-k">=</span> <span class="pl-smi">canvas</span>.<span class="pl-en">getContext</span>(<span class="pl-s"><span class="pl-pds">"</span>2d<span class="pl-pds">"</span></span>)
+
+<span class="pl-c">// translate to center of canvas</span>
+<span class="pl-smi">ctx</span>.<span class="pl-en">translate</span>(<span class="pl-smi">canvas</span>.<span class="pl-c1">width</span><span class="pl-k">/</span><span class="pl-c1">2</span>, canvas<span class="pl-k">/</span><span class="pl-c1">2</span>)
+
+<span class="pl-c">// initialize a koch curve L-System that uses final functions</span>
+<span class="pl-c">// to draw the fractal onto a Canvas element.</span>
+<span class="pl-c">// F: draw a line with length relative to the current iteration (half the previous length for each step)</span>
+<span class="pl-c">//    and translates the current position to the end of the line</span>
+<span class="pl-c">// +: rotates the canvas 60 degree</span>
+<span class="pl-c">// -: rotates the canvas -60 degree</span>
+
+<span class="pl-k">var</span> koch <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+  word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+  productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>},
+  finals<span class="pl-k">:</span> [
+    [<span class="pl-s"><span class="pl-pds">'</span>+<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-c1">60</span>) }],
+    [<span class="pl-s"><span class="pl-pds">'</span>-<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-k">-</span><span class="pl-c1">60</span>) }],
+    [<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> {
+      <span class="pl-smi">ctx</span>.<span class="pl-en">beginPath</span>()
+      <span class="pl-smi">ctx</span>.<span class="pl-c1">moveTo</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>)
+      <span class="pl-smi">ctx</span>.<span class="pl-en">lineTo</span>(<span class="pl-c1">0</span>, <span class="pl-c1">50</span><span class="pl-k">/</span>(<span class="pl-smi">koch</span>.<span class="pl-smi">iterations</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>))
+      <span class="pl-smi">ctx</span>.<span class="pl-en">stroke</span>()
+      <span class="pl-smi">ctx</span>.<span class="pl-en">translate</span>(<span class="pl-c1">0</span>, <span class="pl-c1">50</span><span class="pl-k">/</span>(<span class="pl-smi">koch</span>.<span class="pl-smi">iterations</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>))}
+     ]
+   ]
+})
+
+<span class="pl-smi">koch</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">3</span>)
+<span class="pl-smi">koch</span>.<span class="pl-en">final</span>()</pre></div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/nylki">nylki</a></p>
