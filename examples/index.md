@@ -12,4 +12,4 @@ It uses a web worker to schedule the calculation of the L-System results for smo
 
 ## Tree
 This is a simple tree using branches.
-![[](tree.html)](images/tree.png)
+[![](images/tree.png)](tree.html)
