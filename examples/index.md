@@ -8,9 +8,8 @@ It uses a web worker to schedule the calculation of the L-System results for smo
  )
 [![](images/interactive_screenshot.png)](webworker/)
 
-![](images/interactive_screenshot.png)
 
 
 ## Tree
 This is a simple tree using branches.
-![[](tree.html)](path/to/screenshot.jpg)
+![[](tree.html)](images/tree.png)
