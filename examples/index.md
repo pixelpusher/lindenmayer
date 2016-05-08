@@ -13,7 +13,6 @@ It uses a web worker to schedule the calculation of the L-System results for smo
 ## Tree
 
 This is a simple tree using branches.
- [code](https://github.com/nylki/lindenmayer/blob/master/examples/tree.html)
- )
-
+ ([code](https://github.com/nylki/lindenmayer/blob/master/examples/tree.htm)
+)
 [![](images/tree.png)](tree.html)
