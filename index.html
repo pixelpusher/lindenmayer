@@ -47,38 +47,45 @@
 
       <section id="main_content">
         <h1>
-<a id="lindenmayer" class="anchor" href="#lindenmayer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lindenmayer</h1>
-
-<h2>
-<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
-
-<p>Simple Koch-Curve
-Interactive L-System builder (using a web worker for performance improvements)
-A tree</p>
+<a id="lindenmayer-" class="anchor" href="#lindenmayer-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lindenmayer <a href="https://travis-ci.org/nylki/lindenmayer"><img src="https://travis-ci.org/nylki/lindenmayer.svg?branch=master" alt="Build Status"></a>
+</h1>
 
 <p>Lindenmayer is  a <a href="https://en.wikipedia.org/wiki/L-system">L-System</a> library using modern (ES6) JavaScript with focus on a concise syntax. The idea is to have a very powerful but simple base functionality, that can handle most use-cases by simply allowing anonymous functions as productions, which makes it very flexible in comparison to classic L-Systems.</p>
 
-<p>The library can also parse (to some extend) classic L-System syntax as defined in Lindenmayers original work <em>Algorithmic Beauty of Plant</em> from 1990. (for example branches: <code>[]</code> or context sensitive productions: <code>&lt;&gt;</code>).
+<p>The library can also parse (to some extend) classic L-System syntax as defined in Lindenmayers original work <em>Algorithmic Beauty of Plants</em> from 1990. (for example branches: <code>[]</code> or context sensitive productions: <code>&lt;&gt;</code>).
 Most stuff should work. I am currently working on parametric L-System support.</p>
 
 <p><strong>Right now it's under heavy development, so features and names are subject to change.
 I will remove this warning when I consider this library stable.</strong>
 <strong>Better docs and more examples are coming soon</strong> :)</p>
 
-<p>Basic usage:</p>
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch-curve.</span>
+<ul>
+<li> <a href="https://codepen.io/collection/AVvqeg/">codepen collection (editable!)</a>
+</li>
+<li> <a href="http://nylki.github.io/lindenmayer/examples/webworker">Interactive L-System builder</a>
+</li>
+</ul>
+
+<h2>
+<a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Usage</h2>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch-curve</span>
 <span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
       productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>}
 })
+<span class="pl-c">// Iterate the L-System two times and log the result.</span>
 <span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">kochcurve</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">2</span>)
-<span class="pl-c">// result === 'F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F'</span></pre></div>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(result)
+<span class="pl-c">//'F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F++F-F++F-F-F-F++F-F'</span></pre></div>
 
-<p>There are multiple way to set productions, including javascript functions:</p>
+<p>There are multiple ways to set productions, including javascript functions:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
-<span class="pl-smi">lsys</span>.<span class="pl-en">setWord</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
 
 <span class="pl-c">// simple production, using ES6 arrow function</span>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
@@ -86,93 +93,173 @@ I will remove this warning when I consider this library stable.</strong>
 <span class="pl-c">// or same with just the String, both works</span>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
 
-<span class="pl-c">// simple stochastic production, producing `+F` with 10% probability, `FB+B` with 90%</span>
+<span class="pl-c">// simple stochastic production, producing `F` with 10% probability, `B` with 90%</span>
 <span class="pl-smi">myLSys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.1</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>)
 
 <span class="pl-c">// simple context sensitive production rule, replacing `B` with `Z` if previous character is a A and next character is 'C'</span>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>,
-  ({index, word}) <span class="pl-k">=&gt;</span> (word[index<span class="pl-k">-</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>) <span class="pl-k">&amp;&amp;</span> (word[index<span class="pl-k">+</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>
+  ({index, currentAxiom}) <span class="pl-k">=&gt;</span> (currentAxiom[index<span class="pl-k">-</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>) <span class="pl-k">&amp;&amp;</span> (currentAxiom[index<span class="pl-k">+</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>
 )
 
 <span class="pl-c">// or if you prefer the concise *classic* syntax for context sensitive productions:</span>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A&lt;B&gt;C<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span>)</pre></div>
 
 <h2>
-<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+<a id="initializing" class="anchor" href="#initializing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>initializing</h2>
 
-<h3>
-<a id="initializing" class="anchor" href="#initializing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>initializing</h3>
+<p>You can init a L-System object with the <code>new</code> keyword:</p>
 
-<p>You can init a L-System in one go:</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> myCoolLSystem <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>(options)</pre></div>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch curve.</span>
-<span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
-      productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>}
+<p><code>options</code> may contain:</p>
+
+<ul>
+<li>
+<code>axiom</code>: A String or an Array of Objects to set the initial axiom (sometimes called axiom, start or initiator).</li>
+<li>
+<code>productions</code>: key-value Object to set the productions from one symbol to its axiom. Used when calling <code>iterate()</code>. A production can be either a String or a Function (see below.)</li>
+<li>
+<code>finals</code>: Optional key-value Object to set Functions be executed for each symbol in sequential order. Useful for visualization. Used when calling <code>final()</code>.</li>
+</ul>
+
+<p>advanced options (see <a href="not%20yet%20created">API docs</a> for details):</p>
+
+<ul>
+<li>
+<code>branchSymbols</code>: A String of two characters. Only used when working with classic context sensitive productions. The first symbol is treated as start of a branch, the last symbol as end of a branch. (default: <code>"[]"</code>, but only when using classic CS syntax)</li>
+<li>
+<code>ignoredSymbols</code>: A String of characters to ignore when using context sensitive productions. (default: <code>"+-&amp;^/|\\"</code>, but only when using classic CS syntax)</li>
+<li>
+<code>classicParametricSyntax</code>: A Bool to enable <em>experimental</em> parsing of parametric L-Systems as defined in Lindenmayers book <em>Algorithmic Beauty of Plants</em>. (default: <code>false</code>)</li>
+</ul>
+
+<p>Most often you will find yourself only setting <code>axiom</code>, <code>productions</code> and <code>finals</code>.</p>
+
+<h2>
+<a id="setting-an-axiom" class="anchor" href="#setting-an-axiom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setting an axiom</h2>
+
+<p>As seen in the first section you can simply set your axiom when you init your L-System.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>
+})</pre></div>
+
+<p>You can also set an axiom after initialization:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>
 })
-<span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">kochcurve</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">2</span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>F-F-F<span class="pl-pds">'</span></span>)</pre></div>
 
-<span class="pl-c">// Initialize L-System with multiple productions</span>
-<span class="pl-k">let</span> mylsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
+<h2>
+<a id="setting-productions" class="anchor" href="#setting-productions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setting productions</h2>
+
+<p>Productions define how the axioms symbols get transformed. For example, if you want all <code>A</code>s to be replaced by <code>B</code> in your axiom, you could construct the following production:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsystem <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+  axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
+  productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>}
+})
+<span class="pl-c">//lsystem.iterate() === 'BBC'</span></pre></div>
+
+<p>You can set as many productions on initialization as you like:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsystem <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
       productions<span class="pl-k">:</span> {
         <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A+<span class="pl-pds">'</span></span>,
         <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>BA<span class="pl-pds">'</span></span>,
         <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>
       }
 })
-</pre></div>
+<span class="pl-c">// lsystem.iterate() === 'A+BAABC'</span></pre></div>
 
-<p>It's also possible to use functions as productions. This can be useful if you want to create <strong>stochastic L-Systems</strong>, like so:</p>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
-      productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">F</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.7</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>}
-})
-
-<span class="pl-c">// Productions can be changed later:</span>
-<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.2</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)</pre></div>
-
-<p>You could also start with an empty L-System, and set all necessary parameters later on.</p>
+<p>You could also start with an empty L-System object, and use <code>setAxiom()</code> and <code>setProduction()</code> to edit the L-System later:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
-<span class="pl-smi">lsys</span>.<span class="pl-en">setWord</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>AAB<span class="pl-pds">'</span></span>)
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>CB<span class="pl-pds">'</span></span>)</pre></div>
 
 <p>This can be useful if you want to dynamically generate and edit L-Systems. For example, you might have a UI, where the user can add new production via a text box.</p>
 
+<p>A major feature of Lindenmayer.js is the possibility to use functions as productions, which is especially useful for stochasic L-Systems:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// This L-System produces `F+` with a 70% probability and `F-` with 30% probability</span>
+<span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">F</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;=</span> <span class="pl-c1">0.7</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F+<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-<span class="pl-pds">'</span></span>}
+})
+
+<span class="pl-c">// Productions can also be changed later:</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.2</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>If you are using functions as productions, your function can make use of a number of additional parameters:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>FFFFF<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, (<span class="pl-smi">parameters</span>) <span class="pl-k">=&gt;</span> {
+  <span class="pl-c">// Use the `index` to determine where inside the current axiom, the function is applied on.</span>
+  <span class="pl-k">if</span>(<span class="pl-smi">parameters</span>.<span class="pl-c1">index</span> <span class="pl-k">===</span> <span class="pl-c1">3</span>) <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span>;
+})
+<span class="pl-c">// lsys.iterate() === FFXFF</span></pre></div>
+
+<p><strong>parameters</strong>:</p>
+
+<ul>
+<li>
+<code>index</code>: the index inside the axiom</li>
+<li>
+<code>currentAxiom</code>: the current full axiom/word</li>
+<li>
+<code>part</code>: the current part (symbol or object) the production is applied on. This is only useful if you are using parametric L-Systems (see last chapter) to have access to parameters of a symbol.</li>
+</ul>
+
 <h3>
 <a id="iterating" class="anchor" href="#iterating" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iterating</h3>
 
-<p>Now that we have set up our L-System set, we want to generate new words:</p>
+<p>Now that we have set up our L-System set, we want to generate new axioms with <code>iterate()</code>:</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// iterate once, log result to console:</span>
-<span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>()
-<span class="pl-en">console</span>.<span class="pl-c1">log</span>(result))
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Iterate once</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>();
 
-<span class="pl-c">// iterate multiple times, then log result</span>
-<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">5</span>))</pre></div>
+<span class="pl-c">// Iterate n-times</span>
+<span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">5</span>);</pre></div>
 
 <h3>
-<a id="final-functions-visualization-and-other-post-processing" class="anchor" href="#final-functions-visualization-and-other-post-processing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final functions: Visualization and other post processing</h3>
+<a id="getting-results" class="anchor" href="#getting-results" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Results</h3>
 
-<p>You possibly want to visualize your L-Systems in some way.
-Of course you could iterate and parse the resulting string yourself. But <code>lindemayer</code> already got an API to define
-such postprocessing: <code>final</code> functions in an easy way. In those <code>final</code> functions you can define what should be done for each literal/character. The classic way to use L-Systems is to visualize words with <a href="https://en.wikipedia.org/wiki/Turtle_graphics">turtle graphics</a>.
-The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz's classic work <a href="http://algorithmicbotany.org/papers/#abop">Algorithmic Beauty of Plants</a> can be easily implented this way, to output the fractals onto a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">HTML Canvas element</a>:</p>
+<p><code>iterate()</code> conveniently returns the resulting string:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>())</pre></div>
+
+<p>If you want to fetch the result later, use <code>getString()</code>:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>()
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">lsys</span>.<span class="pl-en">getString</span>())</pre></div>
+
+<h3>
+<a id="putting-it-all-together" class="anchor" href="#putting-it-all-together" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Putting it all together</h3>
+
+<h4>
+<a id="final-functions-visualization-and-other-post-processing" class="anchor" href="#final-functions-visualization-and-other-post-processing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Final functions: Visualization and other post processing</h4>
+
+<p>Most likely you want to visualize or post-process your L-Systems output in some way.
+You could iterate and parse the result yourself, however <code>lindemayer</code> already offers an easy way to define
+such postprocessing: <em>final</em> functions. In those final functions you can define what should be done for each literal/character. The classic way to use L-Systems is to visualize axioms with <a href="https://en.wikipedia.org/wiki/Turtle_graphics">turtle graphics</a>.
+The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz's classic work <a href="http://algorithmicbotany.org/papers/#abop">Algorithmic Beauty of Plants</a> can be easily implented this way, to output the fractals onto a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">Canvas</a>.</p>
+
+<p>You can fiddle with the following example in <a href="http://codepen.io/nylki/pen/QNYqzd">this codepen</a>!</p>
 
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">body</span>&gt;
     &lt;<span class="pl-ent">canvas</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>canvas<span class="pl-pds">"</span></span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>1000<span class="pl-pds">"</span></span> <span class="pl-e">height</span>=<span class="pl-s"><span class="pl-pds">"</span>1000<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">canvas</span>&gt;
 &lt;/<span class="pl-ent">body</span>&gt;
 </pre></div>
 
-<div class="highlight highlight-source-js"><pre>
-<span class="pl-k">var</span> canvas <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(<span class="pl-s"><span class="pl-pds">'</span>canvas<span class="pl-pds">'</span></span>)
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> canvas <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>(<span class="pl-s"><span class="pl-pds">'</span>canvas<span class="pl-pds">'</span></span>)
 <span class="pl-k">var</span> ctx <span class="pl-k">=</span> <span class="pl-smi">canvas</span>.<span class="pl-en">getContext</span>(<span class="pl-s"><span class="pl-pds">"</span>2d<span class="pl-pds">"</span></span>)
 
 <span class="pl-c">// translate to center of canvas</span>
-<span class="pl-smi">ctx</span>.<span class="pl-en">translate</span>(<span class="pl-smi">canvas</span>.<span class="pl-c1">width</span><span class="pl-k">/</span><span class="pl-c1">2</span>, canvas<span class="pl-k">/</span><span class="pl-c1">2</span>)
+<span class="pl-smi">ctx</span>.<span class="pl-en">translate</span>(<span class="pl-smi">canvas</span>.<span class="pl-c1">width</span> <span class="pl-k">/</span> <span class="pl-c1">2</span>, <span class="pl-smi">canvas</span>.<span class="pl-c1">height</span> <span class="pl-k">/</span> <span class="pl-c1">4</span>)
 
 <span class="pl-c">// initialize a koch curve L-System that uses final functions</span>
 <span class="pl-c">// to draw the fractal onto a Canvas element.</span>
@@ -182,23 +269,69 @@ The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz'
 <span class="pl-c">// -: rotates the canvas -60 degree</span>
 
 <span class="pl-k">var</span> koch <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-  word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+  axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
   productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>},
-  finals<span class="pl-k">:</span> [
-    [<span class="pl-s"><span class="pl-pds">'</span>+<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-c1">60</span>) }],
-    [<span class="pl-s"><span class="pl-pds">'</span>-<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-k">-</span><span class="pl-c1">60</span>) }],
-    [<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> {
+  finals<span class="pl-k">:</span> {
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">+</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-c1">60</span>) },
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">-</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-k">-</span><span class="pl-c1">60</span>) },
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">F</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> {
       <span class="pl-smi">ctx</span>.<span class="pl-en">beginPath</span>()
       <span class="pl-smi">ctx</span>.<span class="pl-c1">moveTo</span>(<span class="pl-c1">0</span>,<span class="pl-c1">0</span>)
-      <span class="pl-smi">ctx</span>.<span class="pl-en">lineTo</span>(<span class="pl-c1">0</span>, <span class="pl-c1">50</span><span class="pl-k">/</span>(<span class="pl-smi">koch</span>.<span class="pl-smi">iterations</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>))
+      <span class="pl-smi">ctx</span>.<span class="pl-en">lineTo</span>(<span class="pl-c1">0</span>, <span class="pl-c1">40</span><span class="pl-k">/</span>(<span class="pl-smi">koch</span>.<span class="pl-smi">iterations</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>))
       <span class="pl-smi">ctx</span>.<span class="pl-en">stroke</span>()
-      <span class="pl-smi">ctx</span>.<span class="pl-en">translate</span>(<span class="pl-c1">0</span>, <span class="pl-c1">50</span><span class="pl-k">/</span>(<span class="pl-smi">koch</span>.<span class="pl-smi">iterations</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>))}
-     ]
-   ]
+      <span class="pl-smi">ctx</span>.<span class="pl-en">translate</span>(<span class="pl-c1">0</span>, <span class="pl-c1">40</span><span class="pl-k">/</span>(<span class="pl-smi">koch</span>.<span class="pl-smi">iterations</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>))}
+   }
 })
 
 <span class="pl-smi">koch</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">3</span>)
 <span class="pl-smi">koch</span>.<span class="pl-en">final</span>()</pre></div>
+
+<p>And the result:</p>
+
+<p><a href="http://codepen.io/nylki/pen/QNYqzd"><img src="https://cloud.githubusercontent.com/assets/1710598/15099304/09a530d6-1552-11e6-8261-fd302c5c89f6.png" alt="Resulting image"></a></p>
+
+<h2>
+<a id="advanced-usage" class="anchor" href="#advanced-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced Usage</h2>
+
+<h3>
+<a id="parametric-l-systems" class="anchor" href="#parametric-l-systems" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Parametric L-Systems</h3>
+
+<p>When defining axioms you may also use an Array of Objects instead of basic Strings. This makes the library very flexible because you can insert custom parameters into your symbols. Eg. a symbol like a <code>A</code> may contain a <code>food</code> variable to simulate organic growth when combined with a random() function:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> parametricLsystem <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">lsys.LSystem</span>({
+  axiom<span class="pl-k">:</span> [
+    {symbol<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>, food<span class="pl-k">:</span><span class="pl-c1">0.5</span>},
+    {symbol<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>},
+    {symbol<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>, , food<span class="pl-k">:</span><span class="pl-c1">0.1</span>},
+    {symbol<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>}
+  ],
+  <span class="pl-c">// And then do stuff with those custom parameters in productions:</span>
+  productions<span class="pl-k">:</span> {
+    <span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">A</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> ({part, index}) <span class="pl-k">=&gt;</span> {
+      <span class="pl-c">// split A into one A and a new B if it ate enough:</span>
+      <span class="pl-k">if</span>(<span class="pl-smi">part</span>.<span class="pl-smi">food</span> <span class="pl-k">&gt;=</span> <span class="pl-c1">1.0</span>) {
+        <span class="pl-k">return</span> [{symbol<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>, food<span class="pl-k">:</span><span class="pl-c1">0</span>}, {symbol<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, food<span class="pl-k">:</span><span class="pl-c1">0</span>}]        
+      } <span class="pl-k">else</span> {
+        <span class="pl-c">// otherwise eat a random amount of food</span>
+        <span class="pl-smi">part</span>.<span class="pl-smi">food</span> <span class="pl-k">+=</span> <span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">*</span> <span class="pl-c1">0.1</span>;
+        <span class="pl-k">return</span> part;
+      }
+    }
+  }
+});
+
+<span class="pl-c">// parametricLsystem.iterate(60);</span>
+<span class="pl-c">// Depending on randomness:</span>
+<span class="pl-c">// parametricLsystem.getString() ~= 'ABBBBBABBBC';</span>
+<span class="pl-c">// The first part of B's has more B's because the first A got more initial food which in the end made a small difference, as you can see.</span></pre></div>
+
+<p>As you can see above, you need to explicitly define the <code>symbol</code> value, so the correct production can be applied.</p>
+
+<h4>
+<a id="classic-parametric-l-system-syntax" class="anchor" href="#classic-parametric-l-system-syntax" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Classic Parametric L-System syntax</h4>
+
+<p>they loook like <code>A -&gt; A(1,2)B(5,2)</code>.
+Are planned, but not yet fully implemented. Stay tuned!</p>
       </section>
 
       <footer>
