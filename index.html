@@ -1,37 +1,60 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Lindenmayer by nylki</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Lindenmayer</h1>
-      <h2 class="project-tagline">Feature complete classic L-Systems (branching, context sensitive, parametric) &amp; multi-purpose modern L-System implementation that can take javascript functions as productions.</h2>
-      <a href="https://github.com/nylki/lindenmayer" class="btn">View on GitHub</a>
-      <a href="https://github.com/nylki/lindenmayer/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/nylki/lindenmayer/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
 
-    <section class="main-content">
-      <h1>
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Lindenmayer by nylki</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/nylki/lindenmayer">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Lindenmayer</h1>
+            <h2>Feature complete classic L-Systems (branching, context sensitive, parametric) &amp; multi-purpose modern L-System implementation that can take javascript functions as productions.</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/nylki/lindenmayer/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/nylki/lindenmayer/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
 <a id="lindenmayer" class="anchor" href="#lindenmayer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Lindenmayer</h1>
 
 <h2>
 <a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
 
-<h2></h2>
-
-<h2></h2>
-
-<ul>
-<li>
-</ul>
+<p>Simple Koch-Curve
+Interactive L-System builder (using a web worker for performance improvements)
+A tree</p>
 
 <p>Lindenmayer is  a <a href="https://en.wikipedia.org/wiki/L-system">L-System</a> library using modern (ES6) JavaScript with focus on a concise syntax. The idea is to have a very powerful but simple base functionality, that can handle most use-cases by simply allowing anonymous functions as productions, which makes it very flexible in comparison to classic L-Systems.</p>
 
@@ -46,7 +69,7 @@ I will remove this warning when I consider this library stable.</strong>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch-curve.</span>
 <span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
       productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>}
 })
 <span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">kochcurve</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">2</span>)
@@ -55,7 +78,7 @@ I will remove this warning when I consider this library stable.</strong>
 <p>There are multiple way to set productions, including javascript functions:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
-<span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setWord</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
 
 <span class="pl-c">// simple production, using ES6 arrow function</span>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
@@ -68,7 +91,7 @@ I will remove this warning when I consider this library stable.</strong>
 
 <span class="pl-c">// simple context sensitive production rule, replacing `B` with `Z` if previous character is a A and next character is 'C'</span>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>,
-  ({index, currentAxiom}) <span class="pl-k">=&gt;</span> (currentAxiom[index<span class="pl-k">-</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>) <span class="pl-k">&amp;&amp;</span> (currentAxiom[index<span class="pl-k">+</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>
+  ({index, word}) <span class="pl-k">=&gt;</span> (word[index<span class="pl-k">-</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>) <span class="pl-k">&amp;&amp;</span> (word[index<span class="pl-k">+</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>
 )
 
 <span class="pl-c">// or if you prefer the concise *classic* syntax for context sensitive productions:</span>
@@ -84,14 +107,14 @@ I will remove this warning when I consider this library stable.</strong>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch curve.</span>
 <span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
       productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>}
 })
 <span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">kochcurve</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">2</span>)
 
 <span class="pl-c">// Initialize L-System with multiple productions</span>
 <span class="pl-k">let</span> mylsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
       productions<span class="pl-k">:</span> {
         <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>A+<span class="pl-pds">'</span></span>,
         <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>BA<span class="pl-pds">'</span></span>,
@@ -103,7 +126,7 @@ I will remove this warning when I consider this library stable.</strong>
 <p>It's also possible to use functions as productions. This can be useful if you want to create <strong>stochastic L-Systems</strong>, like so:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-      axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+      word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
       productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span><span class="pl-en">F</span><span class="pl-pds">'</span></span><span class="pl-k">:</span> () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.7</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>}
 })
 
@@ -113,7 +136,7 @@ I will remove this warning when I consider this library stable.</strong>
 <p>You could also start with an empty L-System, and set all necessary parameters later on.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
-<span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+<span class="pl-smi">lsys</span>.<span class="pl-en">setWord</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>AAB<span class="pl-pds">'</span></span>)
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>CB<span class="pl-pds">'</span></span>)</pre></div>
 
@@ -122,7 +145,7 @@ I will remove this warning when I consider this library stable.</strong>
 <h3>
 <a id="iterating" class="anchor" href="#iterating" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iterating</h3>
 
-<p>Now that we have set up our L-System set, we want to generate new axioms:</p>
+<p>Now that we have set up our L-System set, we want to generate new words:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// iterate once, log result to console:</span>
 <span class="pl-k">let</span> result <span class="pl-k">=</span> <span class="pl-smi">lsys</span>.<span class="pl-en">iterate</span>()
@@ -136,7 +159,7 @@ I will remove this warning when I consider this library stable.</strong>
 
 <p>You possibly want to visualize your L-Systems in some way.
 Of course you could iterate and parse the resulting string yourself. But <code>lindemayer</code> already got an API to define
-such postprocessing: <code>final</code> functions in an easy way. In those <code>final</code> functions you can define what should be done for each literal/character. The classic way to use L-Systems is to visualize axioms with <a href="https://en.wikipedia.org/wiki/Turtle_graphics">turtle graphics</a>.
+such postprocessing: <code>final</code> functions in an easy way. In those <code>final</code> functions you can define what should be done for each literal/character. The classic way to use L-Systems is to visualize words with <a href="https://en.wikipedia.org/wiki/Turtle_graphics">turtle graphics</a>.
 The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz's classic work <a href="http://algorithmicbotany.org/papers/#abop">Algorithmic Beauty of Plants</a> can be easily implented this way, to output the fractals onto a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">HTML Canvas element</a>:</p>
 
 <div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">body</span>&gt;
@@ -159,7 +182,7 @@ The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz'
 <span class="pl-c">// -: rotates the canvas -60 degree</span>
 
 <span class="pl-k">var</span> koch <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
-  axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
+  word<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F++F++F<span class="pl-pds">'</span></span>,
   productions<span class="pl-k">:</span> {<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>F-F++F-F<span class="pl-pds">'</span></span>},
   finals<span class="pl-k">:</span> [
     [<span class="pl-s"><span class="pl-pds">'</span>+<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> { <span class="pl-smi">ctx</span>.<span class="pl-en">rotate</span>((<span class="pl-c1">Math</span>.<span class="pl-c1">PI</span><span class="pl-k">/</span><span class="pl-c1">180</span>) <span class="pl-k">*</span> <span class="pl-c1">60</span>) }],
@@ -176,15 +199,22 @@ The standard rules, found in Aristid Lindenmayer's and Przemyslaw Prusinkiewicz'
 
 <span class="pl-smi">koch</span>.<span class="pl-en">iterate</span>(<span class="pl-c1">3</span>)
 <span class="pl-smi">koch</span>.<span class="pl-en">final</span>()</pre></div>
+      </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/nylki/lindenmayer">Lindenmayer</a> is maintained by <a href="https://github.com/nylki">nylki</a>.</span>
-
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/nylki">nylki</a> can be found on <a href="https://github.com/nylki/lindenmayer">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
       </footer>
 
-    </section>
+    </div>
 
-  
+    
   </body>
 </html>
