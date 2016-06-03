@@ -52,11 +52,10 @@
 
 <p>Lindenmayer is  a <a href="https://en.wikipedia.org/wiki/L-system">L-System</a> library using modern (ES6) JavaScript with focus on a concise syntax. The idea is to have a very powerful but simple base functionality, that can handle most use-cases by simply allowing anonymous functions as productions, which makes it very flexible in comparison to classic L-Systems.</p>
 
-<p>The library can also parse (to some extend) classic L-System syntax as defined in Lindenmayers original work <em>Algorithmic Beauty of Plants</em> from 1990. (for example branches: <code>[]</code> or context sensitive productions: <code>&lt;&gt;</code>).
+<p>The library can also parse to some extent classic L-System syntax as defined in Aristid Lindenmayers original work <em>Algorithmic Beauty of Plants</em> from 1990. For example branches: <code>[]</code> or context sensitive productions: <code>&lt;&gt;</code>.
 Most stuff should work. I am currently working on parametric L-System support.</p>
 
-<p><strong>Right now it's under heavy development, so features and names are subject to change.
-I will remove this warning when I consider this library stable.</strong>
+<p><em>Please note, that this library is still under heavy development, so names etc. are subject to change.</em>*
 <strong>Better docs and more examples are coming soon</strong> :)</p>
 
 <h2>
@@ -65,12 +64,41 @@ I will remove this warning when I consider this library stable.</strong>
 <ul>
 <li> <a href="https://codepen.io/collection/AVvqeg/">codepen collection (editable!)</a>
 </li>
-<li> <a href="http://nylki.github.io/lindenmayer/examples/webworker">Interactive L-System builder</a>
+<li> <a href="http://nylki.github.io/lindenmayer/examples/webworker">Interactive L-System builder (2D turtle graphics)</a>
+</li>
+<li> <a href="http://nylki.github.io/lindenmayer/examples/webworker/index_3d.html">Interactive L-System builder (3D turtle graphics)</a>
 </li>
 </ul>
 
 <h2>
-<a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic Usage</h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h2>
+
+<h3>
+<a id="direct-download" class="anchor" href="#direct-download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Direct download</h3>
+
+<ul>
+<li>
+<a href="https://github.com/nylki/lindenmayer/releases/download/1.0/lindenmayer.js">Download <code>lindenmayer.js</code></a>:</li>
+<li>Then in your <code>index.html</code>:</li>
+</ul>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>lindenmayer.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h3>
+<a id="npm" class="anchor" href="#npm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>npm</h3>
+
+<div class="highlight highlight-source-shell"><pre>npm install --save lindenmayer</pre></div>
+
+<p>Then in your Node.js/browserify/… script:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> LSystem <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>lindenmayer<span class="pl-pds">'</span></span>);</pre></div>
+
+<p>Or in your <code>index.html</code>:</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>node_modules/lindenmayer/dist/lindenmayer.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h2>
+<a id="quick-intro" class="anchor" href="#quick-intro" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Intro</h2>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// Initializing a L-System that produces the Koch-curve</span>
 <span class="pl-k">let</span> kochcurve <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
@@ -84,28 +112,34 @@ I will remove this warning when I consider this library stable.</strong>
 
 <p>There are multiple ways to set productions, including javascript functions:</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>()
-<span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>)
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> myLsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
+  axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
+  <span class="pl-c">/* Directly when initializing a new L-System object: */</span>
+  productions<span class="pl-k">:</span> { <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>BB<span class="pl-pds">'</span></span> }
+})
 
-<span class="pl-c">// simple production, using ES6 arrow function</span>
-<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
+<span class="pl-c">// After initialization:</span>
+<span class="pl-smi">myLsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
 
-<span class="pl-c">// or same with just the String, both works</span>
-<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
+<span class="pl-c">// You can also use ES6 arrow functions (same result as above):</span>
+<span class="pl-smi">myLsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>F+F<span class="pl-pds">'</span></span>)
 
-<span class="pl-c">// simple stochastic production, producing `F` with 10% probability, `B` with 90%</span>
+<span class="pl-c">// Simple stochastic production, producing `F` with 10% probability, `B` with 90%</span>
 <span class="pl-smi">myLSys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>, () <span class="pl-k">=&gt;</span> (<span class="pl-c1">Math</span>.<span class="pl-c1">random</span>() <span class="pl-k">&lt;</span> <span class="pl-c1">0.1</span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>)
 
-<span class="pl-c">// simple context sensitive production rule, replacing `B` with `Z` if previous character is a A and next character is 'C'</span>
-<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>,
+<span class="pl-c">// Simple context sensitive production rule, replacing `B` with `Z` if previous character is a A and next character is 'C'</span>
+<span class="pl-smi">myLsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>,
   ({index, currentAxiom}) <span class="pl-k">=&gt;</span> (currentAxiom[index<span class="pl-k">-</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>A<span class="pl-pds">'</span></span>) <span class="pl-k">&amp;&amp;</span> (currentAxiom[index<span class="pl-k">+</span><span class="pl-c1">1</span>] <span class="pl-k">===</span> <span class="pl-s"><span class="pl-pds">'</span>C<span class="pl-pds">'</span></span>) <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span> <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>
 )
 
 <span class="pl-c">// or if you prefer the concise *classic* syntax for context sensitive productions:</span>
-<span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A&lt;B&gt;C<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span>)</pre></div>
+<span class="pl-smi">myLsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>A&lt;B&gt;C<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Z<span class="pl-pds">'</span></span>)</pre></div>
+
+<h1>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Documentation</h1>
 
 <h2>
-<a id="initializing" class="anchor" href="#initializing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>initializing</h2>
+<a id="initialization" class="anchor" href="#initialization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initialization</h2>
 
 <p>You can init a L-System object with the <code>new</code> keyword:</p>
 
@@ -136,7 +170,7 @@ I will remove this warning when I consider this library stable.</strong>
 <p>Most often you will find yourself only setting <code>axiom</code>, <code>productions</code> and <code>finals</code>.</p>
 
 <h2>
-<a id="setting-an-axiom" class="anchor" href="#setting-an-axiom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setting an axiom</h2>
+<a id="setting-an-axiom" class="anchor" href="#setting-an-axiom" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting an Axiom</h2>
 
 <p>As seen in the first section you can simply set your axiom when you init your L-System.</p>
 
@@ -152,9 +186,9 @@ I will remove this warning when I consider this library stable.</strong>
 <span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>F-F-F<span class="pl-pds">'</span></span>)</pre></div>
 
 <h2>
-<a id="setting-productions" class="anchor" href="#setting-productions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setting productions</h2>
+<a id="setting-productions" class="anchor" href="#setting-productions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setting Productions</h2>
 
-<p>Productions define how the axioms symbols get transformed. For example, if you want all <code>A</code>s to be replaced by <code>B</code> in your axiom, you could construct the following production:</p>
+<p>Productions define how the symbols of an axiom get transformed. For example, if you want all <code>A</code>s to be replaced by <code>B</code> in your axiom, you could construct the following production:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> lsystem <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
   axiom<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>ABC<span class="pl-pds">'</span></span>,
@@ -183,7 +217,7 @@ I will remove this warning when I consider this library stable.</strong>
 
 <p>This can be useful if you want to dynamically generate and edit L-Systems. For example, you might have a UI, where the user can add new production via a text box.</p>
 
-<p>A major feature of Lindenmayer.js is the possibility to use functions as productions, which is especially useful for stochasic L-Systems:</p>
+<p>A major feature of this library is the possibility to use functions as productions, which is especially useful for stochastic L-Systems:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-c">// This L-System produces `F+` with a 70% probability and `F-` with 30% probability</span>
 <span class="pl-k">let</span> lsys <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">LSystem</span>({
@@ -199,9 +233,13 @@ I will remove this warning when I consider this library stable.</strong>
 <div class="highlight highlight-source-js"><pre><span class="pl-smi">lsys</span>.<span class="pl-en">setAxiom</span>(<span class="pl-s"><span class="pl-pds">'</span>FFFFF<span class="pl-pds">'</span></span>)
 <span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, (<span class="pl-smi">parameters</span>) <span class="pl-k">=&gt;</span> {
   <span class="pl-c">// Use the `index` to determine where inside the current axiom, the function is applied on.</span>
-  <span class="pl-k">if</span>(<span class="pl-smi">parameters</span>.<span class="pl-c1">index</span> <span class="pl-k">===</span> <span class="pl-c1">3</span>) <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span>;
+  <span class="pl-k">if</span>(<span class="pl-smi">parameters</span>.<span class="pl-c1">index</span> <span class="pl-k">===</span> <span class="pl-c1">2</span>) <span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span>;
 })
 <span class="pl-c">// lsys.iterate() === FFXFF</span></pre></div>
+
+<p>For a shorter notation you could use the ES6 feature of <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Object_destructuring">object destructuring</a> (has support in most modern browsers):</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">lsys</span>.<span class="pl-en">setProduction</span>(<span class="pl-s"><span class="pl-pds">'</span>F<span class="pl-pds">'</span></span>, ({index, part}) <span class="pl-k">=&gt;</span> index <span class="pl-k">===</span> <span class="pl-c1">2</span>  <span class="pl-k">?</span> <span class="pl-s"><span class="pl-pds">'</span>X<span class="pl-pds">'</span></span> <span class="pl-k">:</span> part);</pre></div>
 
 <p><strong>parameters</strong>:</p>
 
@@ -211,11 +249,11 @@ I will remove this warning when I consider this library stable.</strong>
 <li>
 <code>currentAxiom</code>: the current full axiom/word</li>
 <li>
-<code>part</code>: the current part (symbol or object) the production is applied on. This is only useful if you are using parametric L-Systems (see last chapter) to have access to parameters of a symbol.</li>
+<code>part</code>: the current part (symbol or object) the production is applied on. This is especially useful if you are using parametric L-Systems (see last chapter) to have access to parameters of a symbol.</li>
 </ul>
 
 <h3>
-<a id="iterating" class="anchor" href="#iterating" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>iterating</h3>
+<a id="applying-productions" class="anchor" href="#applying-productions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Applying Productions</h3>
 
 <p>Now that we have set up our L-System set, we want to generate new axioms with <code>iterate()</code>:</p>
 
