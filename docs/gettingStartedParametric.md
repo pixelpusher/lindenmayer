@@ -1,0 +1,4 @@
+Each L-System you define will require that you define one axiom and at least one production. In most situations your axiom and production results will be regular Strings like: `'F+F-AB'`.
+
+To allow for some more advanced functionality you can define axioms (and production results) also in the internal format Lindenmayer.js uses:
+`[{symbol: 'F'}, {symbol: '+'}, {symbol: 'F'}, {symbol: '-'}, {symbol: 'A'}, {symbol: 'B'}]`. This allows you to add additional parameters for each symbol, which can be used by productions. You could insert a `food` parameter for example: `[{symbol: 'F', food: 0}, {symbol: '+'}, {symbol: 'F', food: 5}, {symbol: '-'}, {symbol: 'A'}, {symbol: 'B'}]`. you could then have a production for `F` that requires `food` to be of a certain value and return own symbol objects with different `food` values.
