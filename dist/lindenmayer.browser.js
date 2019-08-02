@@ -106,8 +106,19 @@
     if (typeof string !== 'string' && string instanceof String === false) return string;
     var transformed = [];
 
-    for (var _i2 = 0; _i2 < string.length; _i2++) {
-      var symbol = string[_i2];
+    for (var _iterator = string, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+      var _ref;
+
+      if (_isArray) {
+        if (_i >= _iterator.length) break;
+        _ref = _iterator[_i++];
+      } else {
+        _i = _iterator.next();
+        if (_i.done) break;
+        _ref = _i.value;
+      }
+
+      var symbol = _ref;
       transformed.push({
         symbol: symbol
       });
@@ -236,8 +247,19 @@
         // calculate weight sum
         newProduction[1].weightSum = 0;
 
-        for (var _i2 = 0, _newProduction$1$succ2 = newProduction[1].successors; _i2 < _newProduction$1$succ2.length; _i2++) {
-          var s = _newProduction$1$succ2[_i2];
+        for (var _iterator = newProduction[1].successors, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+          var _ref2;
+
+          if (_isArray) {
+            if (_i >= _iterator.length) break;
+            _ref2 = _iterator[_i++];
+          } else {
+            _i = _iterator.next();
+            if (_i.done) break;
+            _ref2 = _i.value;
+          }
+
+          var s = _ref2;
           newProduction[1].weightSum += s.weight;
         }
       }
@@ -269,10 +291,10 @@
       if (newProductions === undefined) throw new Error('no production specified.');
       this.clearProductions();
 
-      for (var _i4 = 0, _Object$entries2 = Object.entries(newProductions); _i4 < _Object$entries2.length; _i4++) {
-        var _Object$entries2$_i = _Object$entries2[_i4],
-            from = _Object$entries2$_i[0],
-            to = _Object$entries2$_i[1];
+      for (var _i2 = 0, _Object$entries = Object.entries(newProductions); _i2 < _Object$entries.length; _i2++) {
+        var _Object$entries$_i = _Object$entries[_i2],
+            from = _Object$entries$_i[0],
+            to = _Object$entries$_i[1];
         this.setProduction(from, to, true);
       }
     };
@@ -378,8 +400,19 @@
           */
 
 
-          for (var _i6 = 0, _p$successors2 = p.successors; _i6 < _p$successors2.length; _i6++) {
-            var _p = _p$successors2[_i6];
+          for (var _iterator2 = p.successors, _isArray2 = Array.isArray(_iterator2), _i3 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+            var _ref3;
+
+            if (_isArray2) {
+              if (_i3 >= _iterator2.length) break;
+              _ref3 = _iterator2[_i3++];
+            } else {
+              _i3 = _iterator2.next();
+              if (_i3.done) break;
+              _ref3 = _i3.value;
+            }
+
+            var _p = _ref3;
 
             if (p.isStochastic) {
               currentWeight += _p.weight;
@@ -422,8 +455,19 @@
       var newAxiom = typeof this.axiom === 'string' ? '' : [];
       var index = 0; // iterate all symbols/characters of the axiom and lookup according productions
 
-      for (var _i8 = 0, _this$axiom2 = this.axiom; _i8 < _this$axiom2.length; _i8++) {
-        var part = _this$axiom2[_i8];
+      for (var _iterator3 = this.axiom, _isArray3 = Array.isArray(_iterator3), _i4 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
+        var _ref4;
+
+        if (_isArray3) {
+          if (_i4 >= _iterator3.length) break;
+          _ref4 = _iterator3[_i4++];
+        } else {
+          _i4 = _iterator3.next();
+          if (_i4.done) break;
+          _ref4 = _i4.value;
+        }
+
+        var part = _ref4;
         // Stuff for classic parametric L-Systems: get actual symbol and possible parameters
         // params will be given the production function, if applicable.
         var symbol = part.symbol || part;
@@ -473,8 +517,19 @@
     _proto.final = function final(externalArg) {
       var index = 0;
 
-      for (var _i10 = 0, _this$axiom4 = this.axiom; _i10 < _this$axiom4.length; _i10++) {
-        var part = _this$axiom4[_i10];
+      for (var _iterator4 = this.axiom, _isArray4 = Array.isArray(_iterator4), _i5 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator]();;) {
+        var _ref5;
+
+        if (_isArray4) {
+          if (_i5 >= _iterator4.length) break;
+          _ref5 = _iterator4[_i5++];
+        } else {
+          _i5 = _iterator4.next();
+          if (_i5.done) break;
+          _ref5 = _i5.value;
+        }
+
+        var part = _ref5;
         // if we have objects for each symbol, (when using parametric L-Systems)
         // get actual identifiable symbol character
         var symbol = part;
@@ -499,7 +554,326 @@
 
         index++;
       }
+    } // return list of functions for parts for future running
+    // returns an array of [function, args...] where args are index, part, externalArg
+    ;
+
+    _proto.getFuncs = function getFuncs() {
+      var funcsList = [];
+      var index = 0;
+
+      for (var _iterator5 = this.axiom, _isArray5 = Array.isArray(_iterator5), _i6 = 0, _iterator5 = _isArray5 ? _iterator5 : _iterator5[Symbol.iterator]();;) {
+        var _ref6;
+
+        if (_isArray5) {
+          if (_i6 >= _iterator5.length) break;
+          _ref6 = _iterator5[_i6++];
+        } else {
+          _i6 = _iterator5.next();
+          if (_i6.done) break;
+          _ref6 = _i6.value;
+        }
+
+        var part = _ref6;
+        // if we have objects for each symbol, (when using parametric L-Systems)
+        // get actual identifiable symbol character
+        var symbol = part;
+        if (typeof part === 'object' && part.symbol) symbol = part.symbol;
+
+        if (this.finals.has(symbol)) {
+          var finalFunction = this.finals.get(symbol);
+          var typeOfFinalFunction = typeof finalFunction;
+
+          if (typeOfFinalFunction !== 'function') {
+            throw Error('\'' + symbol + '\'' + ' has an object for a final function. But it is __not a function__ but a ' + typeOfFinalFunction + '!');
+          } // execute symbols function
+          // supply in first argument an details object with current index and part
+          // and in the first argument inject the external argument (like a render target)
+
+
+          funcsList.push([finalFunction, index, part]);
+          index++;
+        }
+      }
+
+      return funcsList;
+    } // get iterable list of functions -- runs the function and returns index / total
+    ;
+
+    _proto.run =
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function run(args) {
+      var funcsList, totalFuncs;
+      return regeneratorRuntime.wrap(function run$(_context2) {
+        while (1) {
+          switch (_context2.prev = _context2.next) {
+            case 0:
+              funcsList = this.getFuncs(args); // array
+
+              totalFuncs = funcsList.length - 1;
+              return _context2.delegateYield(
+              /*#__PURE__*/
+              regeneratorRuntime.mark(function _callee() {
+                var _iterator6, _isArray6, _i7, _ref7, f, func, index, part;
+
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        _iterator6 = funcsList, _isArray6 = Array.isArray(_iterator6), _i7 = 0, _iterator6 = _isArray6 ? _iterator6 : _iterator6[Symbol.iterator]();
+
+                      case 1:
+                        if (!_isArray6) {
+                          _context.next = 7;
+                          break;
+                        }
+
+                        if (!(_i7 >= _iterator6.length)) {
+                          _context.next = 4;
+                          break;
+                        }
+
+                        return _context.abrupt("break", 20);
+
+                      case 4:
+                        _ref7 = _iterator6[_i7++];
+                        _context.next = 11;
+                        break;
+
+                      case 7:
+                        _i7 = _iterator6.next();
+
+                        if (!_i7.done) {
+                          _context.next = 10;
+                          break;
+                        }
+
+                        return _context.abrupt("break", 20);
+
+                      case 10:
+                        _ref7 = _i7.value;
+
+                      case 11:
+                        f = _ref7;
+                        func = f[0];
+                        index = f[1];
+                        part = f[2];
+                        func({
+                          index: index,
+                          part: part
+                        }, args); // see above function: 
+
+                        _context.next = 18;
+                        return {
+                          'index': index,
+                          'total': totalFuncs
+                        };
+
+                      case 18:
+                        _context.next = 1;
+                        break;
+
+                      case 20:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              })(), "t0", 3);
+
+            case 3:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, run, this);
+    }) // give you all the parts as an Iterable but without knowing max/min parts -- little faster than run, I suppose for large sets
+
+    /*
+     * EX: 
+     * s.tree is your LSystem()
+     
+     s.tree.iterate(1); 
+    // get all functions and iterate over them (running them in order)
+    for (let v of s.tree.steps()) {
+        for (let p in v) {
+        loginfo(p + " " + v[p]);
+        }
     }
+      // get all functions and iterate over them (running them in order)
+    let iter = s.tree.steps(true); // step through all steps forever, repeating them
+    let i=0; // counter for safety!
+    while (i++ < 30)
+    {
+      let v = iter.next().value();
+        if (v.part) // part is false at loop
+        for (let p in v) {
+          console.log(i + ": " + p + " " + v[p]);
+      }
+    }
+    *
+    */
+    ;
+    _proto.steps =
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function steps(loop, externalArg) {
+      var _this = this;
+
+      var _loop;
+
+      return regeneratorRuntime.wrap(function steps$(_context5) {
+        while (1) {
+          switch (_context5.prev = _context5.next) {
+            case 0:
+              if (loop === void 0) {
+                loop = false;
+              }
+
+              _loop =
+              /*#__PURE__*/
+              regeneratorRuntime.mark(function _loop() {
+                var index, _loop2, _iterator7, _isArray7, _i8, _ref8, _ret;
+
+                return regeneratorRuntime.wrap(function _loop$(_context4) {
+                  while (1) {
+                    switch (_context4.prev = _context4.next) {
+                      case 0:
+                        // do at least once
+                        index = 0;
+                        _loop2 =
+                        /*#__PURE__*/
+                        regeneratorRuntime.mark(function _loop2() {
+                          var part, symbol, finalFunction, typeOfFinalFunction;
+                          return regeneratorRuntime.wrap(function _loop2$(_context3) {
+                            while (1) {
+                              switch (_context3.prev = _context3.next) {
+                                case 0:
+                                  if (!_isArray7) {
+                                    _context3.next = 6;
+                                    break;
+                                  }
+
+                                  if (!(_i8 >= _iterator7.length)) {
+                                    _context3.next = 3;
+                                    break;
+                                  }
+
+                                  return _context3.abrupt("return", "break");
+
+                                case 3:
+                                  _ref8 = _iterator7[_i8++];
+                                  _context3.next = 10;
+                                  break;
+
+                                case 6:
+                                  _i8 = _iterator7.next();
+
+                                  if (!_i8.done) {
+                                    _context3.next = 9;
+                                    break;
+                                  }
+
+                                  return _context3.abrupt("return", "break");
+
+                                case 9:
+                                  _ref8 = _i8.value;
+
+                                case 10:
+                                  part = _ref8;
+                                  // if we have objects for each symbol, (when using parametric L-Systems)
+                                  // get actual identifiable symbol character
+                                  symbol = part;
+                                  if (typeof part === 'object' && part.symbol) symbol = part.symbol;
+
+                                  if (!_this.finals.has(symbol)) {
+                                    _context3.next = 20;
+                                    break;
+                                  }
+
+                                  finalFunction = _this.finals.get(symbol);
+                                  typeOfFinalFunction = typeof finalFunction;
+
+                                  if (!(typeOfFinalFunction !== 'function')) {
+                                    _context3.next = 18;
+                                    break;
+                                  }
+
+                                  throw Error('\'' + symbol + '\'' + ' has an object for a final function. But it is __not a function__ but a ' + typeOfFinalFunction + '!');
+
+                                case 18:
+                                  _context3.next = 20;
+                                  return function () {
+                                    var v = finalFunction({
+                                      index: index,
+                                      part: part
+                                    }, externalArg);
+                                    if (v === undefined) v = {
+                                      part: part,
+                                      index: index
+                                    };
+                                    return v;
+                                  }();
+
+                                case 20:
+                                  index++;
+
+                                case 21:
+                                case "end":
+                                  return _context3.stop();
+                              }
+                            }
+                          }, _loop2);
+                        });
+                        _iterator7 = _this.axiom, _isArray7 = Array.isArray(_iterator7), _i8 = 0, _iterator7 = _isArray7 ? _iterator7 : _iterator7[Symbol.iterator]();
+
+                      case 3:
+                        return _context4.delegateYield(_loop2(), "t0", 4);
+
+                      case 4:
+                        _ret = _context4.t0;
+
+                        if (!(_ret === "break")) {
+                          _context4.next = 7;
+                          break;
+                        }
+
+                        return _context4.abrupt("break", 9);
+
+                      case 7:
+                        _context4.next = 3;
+                        break;
+
+                      case 9:
+                        _context4.next = 11;
+                        return {
+                          part: false,
+                          index: -1
+                        };
+
+                      case 11:
+                      case "end":
+                        return _context4.stop();
+                    }
+                  }
+                }, _loop);
+              });
+
+            case 2:
+              return _context5.delegateYield(_loop(), "t0", 3);
+
+            case 3:
+              if (loop) {
+                _context5.next = 2;
+                break;
+              }
+
+            case 4:
+            case "end":
+              return _context5.stop();
+          }
+        }
+      }, steps);
+    })
     /*
     how to use match():
      -----------------------
@@ -507,27 +881,27 @@
     If you use the classic syntax, it will by default be automatically transformed to proper
     JS-Syntax.
     Howerver, you can use the match helper function in your on productions:
-    	index is the index of a production using `match`
+    		index is the index of a production using `match`
     eg. in a classic L-System
-    	LSYS = ABCDE
+    		LSYS = ABCDE
     B<C>DE -> 'Z'
-    	the index of the `B<C>D -> 'Z'` production would be the index of C (which is 2) when the
+    		the index of the `B<C>D -> 'Z'` production would be the index of C (which is 2) when the
     production would perform match(). so (if not using the ClassicLSystem class) you'd construction your context-sensitive production from C to Z like so:
-    	LSYS.setProduction('C', (index, axiom) => {
+    		LSYS.setProduction('C', (index, axiom) => {
     	(LSYS.match({index, match: 'B', direction: 'left'}) &&
     	 LSYS.match({index, match: 'DE', direction: 'right'}) ? 'Z' : 'C')
     })
-    	You can just write match({index, ...} instead of match({index: index, ..}) because of new ES6 Object initialization, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_6
+    		You can just write match({index, ...} instead of match({index: index, ..}) because of new ES6 Object initialization, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Object_initializer#New_notations_in_ECMAScript_6
     */
     ;
 
-    _proto.match = function match(_ref2) {
-      var axiom_ = _ref2.axiom_,
-          _match = _ref2.match,
-          ignoredSymbols = _ref2.ignoredSymbols,
-          branchSymbols = _ref2.branchSymbols,
-          index = _ref2.index,
-          direction = _ref2.direction;
+    _proto.match = function match(_ref9) {
+      var axiom_ = _ref9.axiom_,
+          _match = _ref9.match,
+          ignoredSymbols = _ref9.ignoredSymbols,
+          branchSymbols = _ref9.branchSymbols,
+          index = _ref9.index,
+          direction = _ref9.direction;
       var branchCount = 0;
       var explicitBranchCount = 0;
       axiom_ = axiom_ || this.axiom;

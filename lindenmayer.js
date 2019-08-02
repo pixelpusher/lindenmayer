@@ -318,6 +318,120 @@ export default class LSystem {
   }
 
 
+
+    // return list of functions for parts for future running
+    // returns an array of [function, args...] where args are index, part, externalArg
+    getFuncs() {
+        let funcsList = [];
+
+        let index = 0;
+
+        for (let part of this.axiom) {
+            // if we have objects for each symbol, (when using parametric L-Systems)
+            // get actual identifiable symbol character
+            let symbol = part;
+            if (typeof part === 'object' && part.symbol) symbol = part.symbol;
+
+            if (this.finals.has(symbol)) {
+                let finalFunction = this.finals.get(symbol);
+                let typeOfFinalFunction = typeof finalFunction;
+
+                if (typeOfFinalFunction !== 'function') {
+                    throw Error('\'' + symbol + '\'' + ' has an object for a final function. But it is __not a function__ but a ' + typeOfFinalFunction + '!');
+                } // execute symbols function
+                // supply in first argument an details object with current index and part
+                // and in the first argument inject the external argument (like a render target)
+
+                funcsList.push([finalFunction, index, part]);
+                index++;
+            }
+        }
+        return funcsList;
+    }
+
+
+    // get iterable list of functions -- runs the function and returns index / total
+
+    *run(args) {
+        const funcsList = this.getFuncs(args); // array
+        const totalFuncs = funcsList.length - 1;
+
+        yield* function* () {
+            for (let f of funcsList) {
+                const func = f[0];
+                const index = f[1];
+                const part = f[2];
+                func({ index, part }, args); // see above function: 
+                yield { 'index': index, 'total': totalFuncs };
+            }
+        }();
+    }
+
+    // give you all the parts as an Iterable but without knowing max/min parts -- little faster than run, I suppose for large sets
+    /*
+     * EX: 
+     * s.tree is your LSystem()
+     
+     s.tree.iterate(1); 
+    // get all functions and iterate over them (running them in order)
+    for (let v of s.tree.steps()) {
+        for (let p in v) {
+        loginfo(p + " " + v[p]);
+        }
+    }
+
+    // get all functions and iterate over them (running them in order)
+    let iter = s.tree.steps(true); // step through all steps forever, repeating them
+    let i=0; // counter for safety!
+    while (i++ < 30)
+    {
+      let v = iter.next().value();
+
+      if (v.part) // part is false at loop
+        for (let p in v) {
+          console.log(i + ": " + p + " " + v[p]);
+      }
+    }
+    *
+    */
+    *steps(loop = false, externalArg) {
+        do { // do at least once
+            let index = 0;
+            for (let part of this.axiom) {
+                // if we have objects for each symbol, (when using parametric L-Systems)
+                // get actual identifiable symbol character
+                let symbol = part;
+                if (typeof part === 'object' && part.symbol) symbol = part.symbol;
+
+                if (this.finals.has(symbol)) {
+                    let finalFunction = this.finals.get(symbol);
+                    let typeOfFinalFunction = typeof finalFunction;
+
+                    if (typeOfFinalFunction !== 'function') {
+                        throw Error('\'' + symbol + '\'' + ' has an object for a final function. But it is __not a function__ but a ' + typeOfFinalFunction + '!');
+                    }
+
+                    // execute symbols function
+                    // supply in first argument an details object with current index and part
+                    // and in the first argument inject the external argument (like a render target)
+                    // wrap it in a function call so we can ALWAYS return something 
+                    yield (() => {
+                        let v = finalFunction({
+                            index,
+                            part
+                        }, externalArg);
+                        if (v === undefined) v = { part, index };
+                        return v;
+                    })();
+                }
+                index++;
+            }
+            yield { part: false, index: -1 }; // would be nice to know when looping (and finished)
+        } while (loop);
+    }
+
+
+
   /*
 		how to use match():
 		 -----------------------

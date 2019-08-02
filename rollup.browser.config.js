@@ -18,17 +18,27 @@ const babelConf = {
   babelrc: false,
   // https://github.com/rollup/rollup-plugin-babel/issues/254#issuecomment-423799147
   // exclude: [/\/core-js\//],
-  plugins: [
-    ["@babel/plugin-transform-for-of", {"assumeArray": true}]
-  ],
+//  plugins: [
+    //["@babel/plugin-transform-for-of", {"assumeArray": true}],
+    //["@babel/plugin-transform-runtime",
+//	{
+//			"absoluteRuntime": false,
+//			"corejs": false,
+//			"helpers": true,
+//			"regenerator": true,
+//			"useESModules": false
+//			      }]
+//],
+
   presets: [
     ['@babel/preset-env', {
       targets: {
-        ie: '11'
+	      "browsers": [
+		        ">0.25%",
+		        "not ie 11",
+		        "not op_mini all"
+	      ]
       },
-      // useBuiltIns: 'entry',
-      // corejs: {version: 3},
-      modules: false,
       loose: true
     }]
   ],

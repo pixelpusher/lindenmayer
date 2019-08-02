@@ -51,6 +51,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/plugin-transform-for-of": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.4.5",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
@@ -64,5 +65,7 @@
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^5.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "regenerator-runtime": "^0.13.3"
+  }
 }
